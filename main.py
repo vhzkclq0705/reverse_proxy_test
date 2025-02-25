@@ -31,44 +31,36 @@ def two_dimensional_array():
 
 @app.get("/add-large-arrays")
 def add_large_arrays():
-    n = 10 ** 6
-    a = [random.randint(1, 100) for _ in range(n)]
-    b = [random.randint(1, 100) for _ in range(n)]
-    
-    start_time = time.time()
-    result_1 = list(map(sum, zip(a, b)))
-    end_time = time.time()
-    
-    n_a = np.random.randint(1, 100, size=n)
-    n_b = np.random.randint(1, 100, size=n)
-    
-    n_start_time = time.time()
-    result_2 = np.add(n_a, n_b)
-    n_end_time = time.time()
-    
+    creation_time, addition_time = add_arrays(10 ** 6, generate_random_array_with_randint)
     return {
-        "list_comprehension": end_time - start_time,
-        "numpy": n_end_time - n_start_time
+        "creation_time": creation_time,
+        "addition_time": addition_time
     }
     
 @app.get("/add-large-arrays-choices")
-def add_large_arrays_choices():
-    n = 10**6
-    
-    c_start_time = time.time()
-    a = random.choices(range(101), k=n)
-    b = random.choices(range(101), k=n)
-    c_end_time = time.time()
-    
-    s_start_time = time.time()
-    result = list(map(sum, zip(a, b)))
-    s_end_time = time.time()
-    
+def add_large_arrays_choices():    
+    creation_time, addition_time = add_arrays(10 ** 6, generate_random_array_with_choices)
     return {
-        "choice_time": c_end_time - c_start_time,
-        "execution_time": s_end_time - s_start_time
+        "creation_time": creation_time,
+        "addition_time": addition_time
     }
 
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q}
+def generate_random_array_with_randint(N):
+    return [random.randint(0, 100) for _ in range(N)]
+
+def generate_random_array_with_choices(N):
+    return random.choices(range(101), k=N)
+
+def add_arrays(N, generate_random_array):
+    start_time = time.time()
+    a = generate_random_array(N)
+    b = generate_random_array(N)
+    end_time = time.time()
+    array_creation_time = end_time - start_time
+    
+    start_time = time.time()
+    res = list(map(sum, zip(a, b)))
+    end_time = time.time()
+    addition_time = end_time - start_time
+    
+    return (array_creation_time, addition_time)
