@@ -1,9 +1,10 @@
 from typing import Union
-
 from fastapi import FastAPI
+import time
+import random
+import numpy as np
 
 app = FastAPI()
-
 
 @app.get("/")
 def read_root():
@@ -30,10 +31,6 @@ def two_dimensional_array():
 
 @app.get("/add-large-arrays")
 def add_large_arrays():
-    import time
-    import random
-    import numpy as np
-    
     n = 10 ** 6
     a = [random.randint(1, 100) for _ in range(n)]
     b = [random.randint(1, 100) for _ in range(n)]
@@ -54,8 +51,23 @@ def add_large_arrays():
         "numpy": n_end_time - n_start_time
     }
     
+@app.get("/add-large-arrays-choices")
+def add_large_arrays_choices():
+    n = 10**6
     
+    c_start_time = time.time()
+    a = random.choices(range(101), k=n)
+    b = random.choices(range(101), k=n)
+    c_end_time = time.time()
     
+    s_start_time = time.time()
+    result = list(map(sum, zip(a, b)))
+    s_end_time = time.time()
+    
+    return {
+        "choice_time": c_end_time - c_start_time,
+        "execution_time": s_end_time - s_start_time
+    }
 
 @app.get("/items/{item_id}")
 def read_item(item_id: int, q: Union[str, None] = None):
