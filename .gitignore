@@ -163,4 +163,5 @@ cython_debug/
 
 # My
 ngrinder-controller/
+ngrinder-agent/
 *.swp
