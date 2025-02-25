@@ -61,7 +61,13 @@ $ sudo docker compose stats # 성능 모니터링
 $ sudo docker compose up -d --scale web1=<NUM> # NUM개의 서버 컨테이너 생성
 ```
 
+## nginx
 ```bash
 $sudo docker exec -it <LB_NAME> bash # LB_NAME이라는 로드밸런싱 컨테이너 진입
 /# nginx -s reload # scale out을 통해 서버를 늘려줬다면 lb 리로드
+```
+
+## FastAPI
+```bash
+$ fastapi main.py
 ```
