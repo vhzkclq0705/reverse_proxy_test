@@ -31,18 +31,16 @@ def two_dimensional_array():
 
 @app.get("/add-large-arrays")
 def add_large_arrays():
-    creation_time, addition_time = add_arrays(10 ** 6, generate_random_array_with_randint)
+    execution_time = add_arrays(10 ** 5, generate_random_array_with_randint)
     return {
-        "creation_time": creation_time,
-        "addition_time": addition_time
+        "execution_time": execution_time
     }
     
 @app.get("/add-large-arrays-choices")
 def add_large_arrays_choices():    
-    creation_time, addition_time = add_arrays(10 ** 6, generate_random_array_with_choices)
+    execution_time = add_arrays(10 ** 5, generate_random_array_with_choices)
     return {
-        "creation_time": creation_time,
-        "addition_time": addition_time
+        "execution_time": execution_time
     }
 
 def generate_random_array_with_randint(N):
@@ -52,15 +50,11 @@ def generate_random_array_with_choices(N):
     return random.choices(range(101), k=N)
 
 def add_arrays(N, generate_random_array):
-    start_time = time.time()
     a = generate_random_array(N)
     b = generate_random_array(N)
-    end_time = time.time()
-    array_creation_time = end_time - start_time
     
     start_time = time.time()
     res = list(map(sum, zip(a, b)))
     end_time = time.time()
-    addition_time = end_time - start_time
     
-    return (array_creation_time, addition_time)
+    return end_time - start_time
