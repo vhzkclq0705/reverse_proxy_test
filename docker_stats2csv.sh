@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 출력 파일 지정
-OUTPUT_FILE="docker_stats.csv"
+OUTPUT_FILE="./note/docker_stats.csv"
 
 # 파일이 처음 생성될 때 헤더 추가
 if [ ! -f "$OUTPUT_FILE" ]; then
