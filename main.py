@@ -31,14 +31,14 @@ def two_dimensional_array():
 
 @app.get("/add-large-arrays")
 def add_large_arrays():
-    execution_time = add_arrays(10 ** 5, generate_random_array_with_randint)
+    execution_time = add_arrays(10 ** 4, generate_random_array_with_randint)
     return {
         "execution_time": execution_time
     }
     
 @app.get("/add-large-arrays-choices")
 def add_large_arrays_choices():    
-    execution_time = add_arrays(10 ** 5, generate_random_array_with_choices)
+    execution_time = add_arrays(10 ** 4, generate_random_array_with_choices)
     return {
         "execution_time": execution_time
     }

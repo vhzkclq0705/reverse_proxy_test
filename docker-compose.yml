@@ -1,12 +1,30 @@
 services:
-  nginx-proxy:
+  # 로드 밸런서 lb
+  lb:
+    # Docker Hub에서 다운 받을 이미지
     image: nginxproxy/nginx-proxy # https://github.com/nginx-proxy/nginx-proxy
+    # 포트
     ports:
-      - "8083:80"
+      - "8949:80"
+    # 저장 위치
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
     depends_on:
       - api
+  
+  cache:
+    image: nginx
+    ports:
+      - "8083:80"
+    volumes:
+      - ./conf/cache/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - lb
+    deploy:
+      resources:
+        limits:
+          cpus: "1.05"
+          memory: "400M"
 
   api:
     build:
