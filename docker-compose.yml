@@ -24,7 +24,7 @@ services:
       resources:
         limits:
           cpus: "1.05"
-          memory: "400M"
+          memory: "20M"
 
   api:
     build:
@@ -33,8 +33,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.50"
-          memory: "200M"
+          cpus: "2.0"
+          memory: "500M"
     ports:
       - "7942:80"
     expose:
