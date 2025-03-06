@@ -1,12 +1,29 @@
 #!/bin/bash
 
+# 저장할 디렉토리 지정
+OUTPUT_DIR="./note/docker_stats"
+
+# 파일명 자동 증가 함수
+get_next_filename() {
+    local base_name="$OUTPUT_DIR/docker_stats"
+    local extension=".csv"
+    local i=1
+
+    while [[ -f "${base_name}_${i}${extension}" ]]; do
+        ((i++))
+    done
+
+    echo "${base_name}_${i}${extension}"
+}
+
 # 출력 파일 지정
-OUTPUT_FILE="./note/docker_stats.csv"
+OUTPUT_FILE=$(get_next_filename)
 
 # 파일이 처음 생성될 때 헤더 추가
-if [ ! -f "$OUTPUT_FILE" ]; then
-    echo "Timestamp,Container,Name,ID,CPUPerc,MemUsage,MemPerc,NetIO,BlockIO,PIDs" > "$OUTPUT_FILE"
-fi
+echo "Timestamp,Container,Name,ID,CPUPerc,MemUsage,MemPerc,NetIO,BlockIO,PIDs" > "$OUTPUT_FILE"
+# if [ ! -f "$OUTPUT_FILE" ]; then
+#     echo "Timestamp,Container,Name,ID,CPUPerc,MemUsage,MemPerc,NetIO,BlockIO,PIDs" > "$OUTPUT_FILE"
+# fi
 
 # 무한 루프 실행
 while true; do

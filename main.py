@@ -5,6 +5,7 @@ import random
 import numpy as np
 
 app = FastAPI()
+n = 10 ** 5
 
 @app.get("/")
 def read_root():
@@ -29,19 +30,32 @@ def two_dimensional_array():
     
     return {"result": result}
 
+@app.get("/add-large-arrays-numpy")
+def add_large_arrays_numpy():
+    creation_time, execution_time = add_arrays(n, generate_random_array_with_numpy_randint, True)
+    return {
+        "creation_time": creation_time,
+        "execution_time": execution_time
+    }
+
 @app.get("/add-large-arrays")
 def add_large_arrays():
-    execution_time = add_arrays(10 ** 4, generate_random_array_with_randint)
+    creation_time, execution_time = add_arrays(n, generate_random_array_with_randint, False)
     return {
+        "creation_time": creation_time,
         "execution_time": execution_time
     }
     
 @app.get("/add-large-arrays-choices")
 def add_large_arrays_choices():    
-    execution_time = add_arrays(10 ** 4, generate_random_array_with_choices)
+    creation_time, execution_time = add_arrays(n, generate_random_array_with_choices, False)
     return {
+        "creation_time": creation_time,
         "execution_time": execution_time
     }
+    
+def generate_random_array_with_numpy_randint(N):
+    return np.random.randint(1, 101, size=N)
 
 def generate_random_array_with_randint(N):
     return [random.randint(0, 100) for _ in range(N)]
@@ -49,12 +63,14 @@ def generate_random_array_with_randint(N):
 def generate_random_array_with_choices(N):
     return random.choices(range(101), k=N)
 
-def add_arrays(N, generate_random_array):
+def add_arrays(N, generate_random_array, is_numpy):
+    c_start_time = time.time()
     a = generate_random_array(N)
     b = generate_random_array(N)
+    c_end_time = time.time()
     
-    start_time = time.time()
-    res = list(map(sum, zip(a, b)))
-    end_time = time.time()
+    e_start_time = time.time()
+    res = a + b if is_numpy else list(map(sum, zip(a, b)))
+    e_end_time = time.time()
     
-    return end_time - start_time
+    return c_end_time - c_start_time, e_end_time - e_start_time
