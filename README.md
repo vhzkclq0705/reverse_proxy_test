@@ -71,3 +71,25 @@ $sudo docker exec -it <LB_NAME> bash # LB_NAME이라는 로드밸런싱 컨테�
 ```bash
 $ fastapi main.py
 ```
+
+## PDM to requirements.txt
+```bash
+$ pdm export -o requirements.txt --without-hashes
+```
+
+## Docker build & push & pull run
+```bash
+$ sudo docker build -t jerry/fapi:6.1.0 -f docker/fastapi/Dockerfile .
+$ sudo docker login
+$ sudo docker push jerry/fapi:6.1.0
+$ sudo docker run -d --name api -p 8949:80 jerry/fapi:6.1.0
+```
+
+## Deploy Blog to AWS
+```bash
+$ ssh -i "<KEY_NAME>"  ubuntu@<IP>
+
+$ cd code
+$ git clone http://<URL>
+$ cd <REPO_NAME>
+```
