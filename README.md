@@ -40,7 +40,9 @@ $ tree -L 2
     └── ngrinder-controller-3.5.9-p1.war
 
 # controller
-$ java -jar ngrinder-controller-3.5.9-p1.war
+$ echo $NGRINDER_HOME
+/Users/joon/.ngrinder
+$ java java -Djava.io.tmpdir=${NGRINDER_HOME}/lib -jar ngrinder-controller-3.5.9-p1.war
 
 # agent
 $ ./run_agent.sh
@@ -64,7 +66,7 @@ $ sudo docker compose up -d --scale web1=<NUM> # NUM개의 서버 컨테이너 �
 ## nginx
 ```bash
 $sudo docker exec -it <LB_NAME> bash # LB_NAME이라는 로드밸런싱 컨테이너 진입
-/# nginx -s reload # scale out을 통해 서버를 늘려줬다면 lb 리로드
+$ nginx -s reload # scale out을 통해 서버를 늘려줬다면 lb 리로드
 ```
 
 ## FastAPI
@@ -87,7 +89,7 @@ $ sudo docker run -d --name api -p 8949:80 jerry/fapi:6.1.0
 
 ## Deploy Blog to AWS
 ```bash
-$ ssh -i "<KEY_NAME>"  ubuntu@<IP>
+$ ssh -i "<KEY_NAME>"  ubuntu@<IP or DNS>
 
 $ cd code
 $ git clone http://<URL>
